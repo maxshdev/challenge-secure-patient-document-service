@@ -1,0 +1,12 @@
+packages:
+  - apps/api
+  - apps/web
+  - apps/desktop
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@scarf/scarf'
+  - '@swc/core'
+  - sharp
+  - unrs-resolver

@@ -1,0 +1,64 @@
+services:
+  # ── PostgreSQL ──────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: patient-docs-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: patient_documents
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── LocalStack (S3 Mock) ────────────────────────────
+  localstack:
+    image: localstack/localstack:latest
+    container_name: patient-docs-s3
+    restart: unless-stopped
+    environment:
+      SERVICES: s3
+      AWS_DEFAULT_REGION: us-east-1
+    ports:
+      - "4566:4566"
+
+  # ── NestJS API ──────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: patient-docs-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      localstack:
+        condition: service_started
+    ports:
+      - "4000:4000"
+    environment:
+      # Database
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: root
+      DB_NAME: patient_documents
+      # Server
+      PORT: 4000
+      # S3 (LocalStack)
+      S3_MOCK: "true"
+      S3_BUCKET_NAME: patient-documents-dev
+      AWS_REGION: us-east-1
+      S3_ENDPOINT: http://localstack:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+
+volumes:
+  pg_data:
