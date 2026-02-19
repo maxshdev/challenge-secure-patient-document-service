@@ -199,6 +199,7 @@ This system handles Protected Health Information (PHI). While not a full HIPAA i
 - ✅ **Pre-signed URLs**: Secure file downloads via short-lived (60s) S3 URLs.
 - ✅ **Input Validation**: Strict typing with DTOs and `class-validator`.
 - ✅ **Audit Logging**: Immutable, append-only audit trail for compliance.
+- ✅ **Rate Limiting**: Global API throttling (10 req/min/IP) to prevent scraping and DoS (`ThrottlerModule`).
 
 ---
 
@@ -206,7 +207,6 @@ This system handles Protected Health Information (PHI). While not a full HIPAA i
 
 - **Streaming uploads** to S3 via multipart upload (avoid memory buffering)
 - **Read replicas** for scaling read-heavy document listing
-- **Rate limiting** on download endpoints to prevent abuse
 - **File virus scanning** with ClamAV before S3 upload
 - **SIEM integration** for real-time security monitoring
 - **Document versioning** with soft deletes for audit compliance

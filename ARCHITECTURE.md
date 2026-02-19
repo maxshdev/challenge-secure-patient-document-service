@@ -90,6 +90,7 @@ Access Pattern:
 
 - IAM roles with least privilege.
 - No wildcard permissions.
+- Rate limiting (throttling) on public endpoints.
 - No direct DB access from public network.
 
 ### Logging Restrictions

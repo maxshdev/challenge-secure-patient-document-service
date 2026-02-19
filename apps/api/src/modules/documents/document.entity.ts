@@ -5,6 +5,7 @@ import {
     CreateDateColumn,
     Index,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 /**
  * Document entity — stores metadata for patient medical documents.
@@ -27,6 +28,7 @@ export class Document {
     doctorId: string;
 
     @Column({ type: 'varchar', length: 512, unique: true })
+    @Exclude()
     fileKey: string;
 
     @Column({ type: 'varchar', length: 255, nullable: true })

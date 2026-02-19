@@ -10,6 +10,7 @@ import {
     ParseUUIDPipe,
     HttpCode,
     HttpStatus,
+    ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -33,6 +34,7 @@ import type { RequestUser } from '../auth/interfaces/user.interface';
 @ApiSecurity('x-user-id')
 @ApiSecurity('x-user-role')
 @Controller('documents')
+@UseInterceptors(ClassSerializerInterceptor)
 export class DocumentsController {
     constructor(private readonly documentsService: DocumentsService) { }
 

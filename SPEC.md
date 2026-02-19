@@ -105,7 +105,6 @@ Upload a document for a patient.
   "id": "uuid",
   "patientId": "uuid",
   "doctorId": "uuid",
-  "fileKey": "documents/{patientId}/{uuid}.pdf",
   "fileName": "medical-report.pdf",
   "mimeType": "application/pdf",
   "createdAt": "2024-01-15T10:30:00.000Z"
@@ -149,7 +148,7 @@ List accessible documents for the authenticated user.
 ]
 ```
 
-**Important:** `fileKey` is **excluded** from list responses to prevent S3 key enumeration.
+**Important:** Internal S3 keys (fileKey) are excluded from all responses.
 
 **Error responses:**
 
@@ -178,11 +177,13 @@ Get metadata for a specific document.
   "id": "uuid",
   "patientId": "uuid",
   "doctorId": "uuid",
-  "fileKey": "documents/{patientId}/{uuid}.pdf",
   "fileName": "medical-report.pdf",
   "mimeType": "application/pdf",
   "createdAt": "2024-01-15T10:30:00.000Z"
 }
+```
+
+**Note:** `fileKey` is strictly internal. Use `GET /documents/:id/download` to access file content.
 ```
 
 **Error responses:**
@@ -298,4 +299,5 @@ Audit logs are:
 - No PHI in application logs
 - Audit trail for all sensitive operations
 - 10MB file size limit
+- Rate limiting (Throttling) enabled to prevent scraping
 - Response times < 500ms for metadata operations

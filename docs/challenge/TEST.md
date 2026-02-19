@@ -189,9 +189,8 @@ Provide a repository or zip with:
 ```
 - /src
 - SPEC.md
-ARCHITECTURE.md
-README.md
-README.md
+- ARCHITECTURE.md
+- README.md
 ```
 
 ---
